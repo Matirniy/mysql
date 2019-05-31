@@ -1,8 +1,8 @@
 import { Connection } from './index';
 
-export const all = async () =>{
+export async function comand(query){
     return new Promise((resolve, reject)=>{
-        Connection.query('SELECT * FROM users', (err, results)=>{
+        Connection.query(query.selection, (err, results)=>{
             if(err){
                 return reject(err);
             }
@@ -12,5 +12,5 @@ export const all = async () =>{
 }
 
 export default {
-    all
+    comand
 }
