@@ -1,5 +1,7 @@
 import * as React from 'react';
 import './scss/app';
+import generate from './utils/generate';
+
 
 export default class App extends React.Component<IAppProps, IAppState> {
 
@@ -9,8 +11,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
         this.state = {
             users: [],
             command: 'SELECT * FROM management_rights',
+            numbgener: 10,
             response: null,
-            file: null,
         };
 
         this.buttonclick = this.buttonclick.bind(this);
@@ -57,30 +59,33 @@ export default class App extends React.Component<IAppProps, IAppState> {
     }
 
     handleChange(event) {
-        // console.log(event.target.value);
         this.setState({
             command: event.target.value,
         })
     }
 
-    handleFileUpload = (event) => {
+    handleNumber = (event) => {
         this.setState({
-            file: event.target.files[0],
+            numbgener: event.target.value,
         });
     }
 
     generclick() {
-        generate(100, 2);
+        const{
+            numbgener,
+            users
+        } = this.state;
+        let first= users.length;
+        generate(numbgener, first);
     }
 
     render() {
 
         const {
             command,
-            file
+            numbgener
         } = this.state;
 
-        console.log(this.state);
 
         return (
             <main className="container">
@@ -91,11 +96,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
                         <button className="gener-but" onClick={this.sentclick}>Sent SQL command</button>
                     </div>
                     <div className="generate">
-                        <input type="file" className="file" onChange={this.handleFileUpload} />
+                        <input type="text" className="generate-number" value={numbgener} onChange={this.handleNumber} />
                         <button className="gener-but" onClick={this.generclick}>Generate users</button></div>
                 </div>
                 <div className="showusers">
-                    <button className="command-but" onClick={this.buttonclick}>Показать Users</button>
+                    <button className="command-but" onClick={this.buttonclick}>Show Users</button>
                     <div className="list-group" id="hide">
                         <div className="list-group-tit">
                             <div className="tit1">Code</div>
@@ -121,7 +126,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
                         </div>
                     </div>
                 </div>
-
             </main>
         )
     }
@@ -133,32 +137,7 @@ interface IAppProps {
 }
 
 interface IAppState {
+    command: string;
+    numbgener: number;
     users: Array<{ Login: string, Password: number, Code: number }>;
-}
-
-function generate(x, b) {
-    let str = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let first = b;
-    let last = first + x;
-    for (first; first < last; first++) {
-        let leng = Math.round(Math.random() * (10 - 4) + 4);
-        let login = '';
-        let pass = '';
-        for (let i = 0; i < leng; i++) {
-            login += characters.charAt(Math.floor(Math.random() * characters.length));
-            pass += Math.round(Math.random() * (10 - 1) + 1);
-        }
-        str += first + ';' + login + ';' + pass + ';' + '4' + '\n';
-    }
-    console.log(str);
-    const fs = require('fs');
-
-    fs.writeFile("./111.txt", str, (err) => {
-        if (err) {
-            return console.log(err);
-        }
-
-        console.log("The file was saved!");
-    });
 }

@@ -16,17 +16,6 @@ router.get('/api/users', async (req, res) => {
 
 })
 
-// router.get('/api/search', async (req, res) => {
-//     try {
-//         let website = await DB.users.comand();
-//         res.json(website);
-//     } catch(e){
-//         console.log(e);
-//         res.sendStatus(500);
-//     }
-
-// });
-
 router.get('/api/selector', async (req, res) => {
     try {
         const {
