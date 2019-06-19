@@ -34,7 +34,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
         } = this.state;
         let r = await fetch(`/api/selector?selection=${command}`)
         let data = await r.json();
-        console.log(data);
         this.setState({
             response: data,
         });
@@ -77,10 +76,11 @@ export default class App extends React.Component<IAppProps, IAppState> {
         } = this.state;
         let first= users.length;
         generate(numbgener, first);
+        this.state.command='LOAD DATA INFILE "D:/generateData.txt" INTO TABLE users FIELDS TERMINATED BY ";" LINES TERMINATED BY "."';
+        this.componentDidMount();
     }
 
     render() {
-
         const {
             command,
             numbgener
@@ -89,7 +89,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
         return (
             <main className="container">
-                <h1 className="covalence-blue">Hello Derban</h1>
+                <h1 className="covalence-blue">Hello Admin</h1>
                 <div className="function">
                     <div className="sentsql">
                         <input type="text" className="command" value={command} onChange={this.handleChange} />
